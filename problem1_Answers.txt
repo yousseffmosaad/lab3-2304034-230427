@@ -1,0 +1,42 @@
+=========================================
+QUESTION Q1.1
+=========================================
+Requirement: Insert a row in the DEPARTMENT table that references a row in the EMPLOYEE table. Then try to delete the referenced row. What will happen?[cite: 2]
+
+SQL Used:
+INSERT INTO EMPLOYEE (ssn, fname, lname, bdate, address, gender, salary, Dno) 
+VALUES ('999999999', 'Test', 'User', '1995-01-01', 'Test St', 'M', 30000.00, NULL);
+
+INSERT INTO DEPARTMENT (Dnumber, Dname, mgr_ssn, mgr_start_date) 
+VALUES (4, 'Sales', '999999999', '2023-01-01');
+
+DELETE FROM EMPLOYEE WHERE ssn = '999999999';
+
+Output / Error Message:
+ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`company`.`department`, CONSTRAINT `department_ibfk_1` FOREIGN KEY (`mgr_ssn`) REFERENCES `employee` (`ssn`))
+Explanation: MySQL rejects the delete statement because referential integrity is violated; the employee is acting as a manager for the newly inserted department[cite: 1].
+
+=========================================
+QUESTION Q1.2
+=========================================
+Requirement: Insert a row in the PROJECT table that references a row in the DEPARTMENT table that doesn't exist yet. What will happen?[cite: 2]
+
+SQL Used:
+INSERT INTO PROJECT (Pnumber, Pname, Plocation, Dno) 
+VALUES (40, 'AI Research', 'Cairo', 999);
+
+Output / Error Message:
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`company`.`project`, CONSTRAINT `project_ibfk_1` FOREIGN KEY (`Dno`) REFERENCES `department` (`Dnumber`))
+Explanation: MySQL rejects the insertion because department number 999 does not exist in the referenced `DEPARTMENT` table[cite: 1, 2].
+
+=========================================
+QUESTION Q1.3
+=========================================
+Requirement: If mgr_ssn and Dno are both NOT NULL, how will you insert the first row in EMPLOYEE or DEPARTMENT?[cite: 2]
+
+Answer / Solution:
+If both foreign keys are strictly NOT NULL, a circular dependency occurs because an Employee requires a Department (`Dno`), and a Department requires a Manager (`mgr_ssn`). 
+
+To resolve this, you can:
+1. Temporarily disable foreign key checks during insertion using `SET FOREIGN_KEY_CHECKS = 0;`.
+2. Or create tables without the foreign key constraints initially, insert bootstrap records, and add the foreign key constraints later using `ALTER TABLE`[cite: 1].

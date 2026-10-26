@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head><title>Edit Author</title></head>
+<body style="font-family: Arial; margin: 30px;">
+    <h2>Edit Author</h2>
+    <form action="/author/edit/<%= author.author_id %>" method="POST">
+        <label>Name:</label><br><input type="text" name="name" value="<%= author.name %>" required><br><br>
+        <label>Country:</label><br><input type="text" name="country" value="<%= author.country %>"><br><br>
+        <button type="submit">Update Author</button>
+    </form>
+    <br><a href="/dashboard">Back to Dashboard</a>
+</body>
+</html>

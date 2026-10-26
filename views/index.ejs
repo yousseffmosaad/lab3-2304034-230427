@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Library Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 30px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f4f4f4; }
+        a { text-decoration: none; color: blue; margin-right: 10px; }
+        .btn { padding: 8px 12px; background: #007BFF; color: white; border-radius: 4px; display: inline-block; margin-bottom: 10px; }
+        .logout { float: right; color: red; }
+    </style>
+</head>
+<body>
+    <a href="/login" class="logout">Logout</a>
+    <h1>Library Dashboard</h1>
+
+    <h2>Authors (<a href="/author/add" class="btn">Add Author</a>)</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Country</th>
+            <th>Actions</th>
+        </tr>
+        <% authors.forEach(author => { %>
+        <tr>
+            <td><%= author.author_id %></td>
+            <td><%= author.name %></td>
+            <td><%= author.country %></td>
+            <td>
+                <a href="/author/edit/<%= author.author_id %>">Edit</a>
+                <a href="/author/delete/<%= author.author_id %>" onclick="return confirm('Deleting this author will immediately delete all of their books!');">Delete</a>
+            </td>
+        </tr>
+        <% }) %>
+    </table>
+
+    <h2>Books (<a href="/book/add" class="btn">Add Book</a>)</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Price ($)</th>
+            <th>Author ID</th>
+            <th>Actions</th>
+        </tr>
+        <% books.forEach(book => { %>
+        <tr>
+            <td><%= book.book_id %></td>
+            <td><%= book.title %></td>
+            <td><%= book.price %></td>
+            <td><%= book.author_id %></td>
+            <td>
+                <a href="/book/edit/<%= book.book_id %>">Edit</a>
+                <a href="/book/delete/<%= book.book_id %>">Delete</a>
+            </td>
+        </tr>
+        <% }) %>
+    </table>
+</body>
+</html>
